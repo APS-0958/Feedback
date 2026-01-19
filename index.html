@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Artificial Intelligence Expo - Avatar Public School</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f2f5f9;
+            padding: 20px;
+        }
+
+        img {
+            width: 300px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: blue;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #cc5500;
+            margin-bottom: 10px;
+        }
+
+        h3 {
+            margin-bottom: 20px;
+        }
+
+        .stars {
+            font-size: 40px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .star {
+            color: gray;
+        }
+
+        .star.selected {
+            color: gold;
+        }
+
+        textarea {
+            width: 80%;
+            height: 90px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px 30px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .message {
+            margin-top: 15px;
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- School Logo -->
+    <img src="school_logo.png" alt="Avatar Public School Logo">
+
+    <!-- Text Content -->
+    <h1>ANNUAL DAY CELEBRATION</h1>
+    <h2>Artificial Intelligence Expo</h2>
+    <h3>Weather Forecast Prediction Using Artificial Intelligence</h3>
+
+    <!-- Rating Section -->
+    <h3>Rate Our Project <span style="color:red">*</span></h3>
+    <div class="stars">
+        <span class="star" onclick="selectStars(1)">★</span>
+        <span class="star" onclick="selectStars(2)">★</span>
+        <span class="star" onclick="selectStars(3)">★</span>
+        <span class="star" onclick="selectStars(4)">★</span>
+        <span class="star" onclick="selectStars(5)">★</span>
+    </div>
+
+    <!-- Feedback Section -->
+    <h3>Feedback: (optional)</h3>
+    <textarea id="feedback" placeholder="Type your feedback here..."></textarea>
+
+    <!-- Submit Button -->
+    <br>
+    <button onclick="submitForm()">Submit</button>
+
+    <!-- Message -->
+    <div class="message" id="message"></div>
+
+    <script>
+        let rating = 0;
+
+        function selectStars(num) {
+            rating = num;   // ✅ FIXED: allow 1–5 stars
+            let stars = document.querySelectorAll(".star");
+
+            stars.forEach((star, index) => {
+                star.classList.toggle("selected", index < rating);
+            });
+        }
+
+        function submitForm() {
+            let feedback = document.getElementById("feedback").value;
+
+            if (rating === 0) {
+                document.getElementById("message").innerText =
+                "You have not filled the form";
+                return;
+            }
+
+            document.getElementById("message").style.color = "green";
+            document.getElementById("message").innerText =
+            "Thank you! Your response has been submitted.";
+
+            // Later: connect to Google Form
+        }
+    </script>
+
+</body>
+</html>
