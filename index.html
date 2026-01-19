@@ -81,12 +81,15 @@
     <!-- Rating Section -->
     <h3>Rate Our Project <span style="color:red">*</span></h3>
     <div class="stars">
-        <span class="star" onclick="selectStars(1)">★</span>
-        <span class="star" onclick="selectStars(2)">★</span>
-        <span class="star" onclick="selectStars(3)">★</span>
-        <span class="star" onclick="selectStars(4)">★</span>
-        <span class="star" onclick="selectStars(5)">★</span>
+        <span class="star" id="star1" onclick="selectStars(1)">★</span>
+        <span class="star" id="star2" onclick="selectStars(2)">★</span>
+        <span class="star" id="star3" onclick="selectStars(3)">★</span>
+        <span class="star" id="star4" onclick="selectStars(4)">★</span>
+        <span class="star" id="star5" onclick="selectStars(5)">★</span>
     </div>
+
+    <!-- Hidden rating value -->
+    <input type="hidden" id="ratingValue" value="">
 
     <!-- Feedback Section -->
     <h3>Feedback: (optional)</h3>
@@ -96,12 +99,6 @@
     <br>
     <button onclick="submitForm()">Submit</button>
 
-    <br><br>
-
-<a href="https://docs.google.com/forms/d/e/1FAIpQLSesc4DPfk4lbNJ_TCszdNUwRmQHlEDUzxIDRdla1kis-XjWtg/viewform?usp=dialog" target="_blank">
-    <button>Submit Feedback to Storage</button>
-</a>
-
     <!-- Message -->
     <div class="message" id="message"></div>
 
@@ -109,11 +106,12 @@
         let rating = 0;
 
         function selectStars(num) {
-            rating = num;   // ✅ FIXED: allow 1–5 stars
+            rating = num;
+            document.getElementById("ratingValue").value = num;
             let stars = document.querySelectorAll(".star");
 
             stars.forEach((star, index) => {
-                star.classList.toggle("selected", index < rating);
+                star.classList.toggle("selected", index < num);
             });
         }
 
@@ -121,19 +119,33 @@
             let feedback = document.getElementById("feedback").value;
 
             if (rating === 0) {
-                document.getElementById("message").innerText =
-                "You have not filled the form";
+                document.getElementById("message").style.color = "red";
+                document.getElementById("message").innerText = "You have not filled the form";
                 return;
             }
 
+            const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSesc4DPfk4lbNJ_TCszdNUwRmQHlEDUzxIDRdla1kis-XjWtg/formResponse";
+
+            const data = new URLSearchParams();
+            data.append("entry.902722392", rating);
+            data.append("entry.1659189686", feedback);
+
+            fetch(formURL, {
+                method: "POST",
+                mode: "no-cors",
+                body: data
+            });
+
             document.getElementById("message").style.color = "green";
             document.getElementById("message").innerText =
-            "Thank you! Your response has been submitted.";
+                "Thank you! Your response has been submitted.";
 
-            // Later: connect to Google Form
+            // Optional: reset after submit
+            rating = 0;
+            document.getElementById("feedback").value = "";
+            document.querySelectorAll(".star").forEach(s => s.classList.remove("selected"));
         }
     </script>
 
 </body>
 </html>
-
