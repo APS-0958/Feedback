@@ -47,27 +47,36 @@ body {
     color: #333;
 }
 
-.stars {
+/* ⭐ CORRECT STAR SYSTEM */
+.rating {
     display: flex;
     justify-content: center;
-    flex-direction: row;
+    gap: 5px;
     margin: 15px 0;
 }
 
-.stars input {
+.rating input {
     display: none;
 }
 
-.stars label {
+.rating label {
     font-size: 32px;
     color: #ccc;
     cursor: pointer;
-    padding: 2px;
 }
 
-/* Correct star filling (LEFT → RIGHT) */
-.stars input:checked + label,
-.stars input:checked + label ~ label {
+/* Fill stars LEFT → RIGHT */
+.rating input:checked ~ label {
+    color: #ccc;
+}
+
+.rating label:hover,
+.rating label:hover ~ label {
+    color: gold;
+}
+
+.rating input:checked + label,
+.rating input:checked + label ~ label {
     color: gold;
 }
 
@@ -109,7 +118,7 @@ button:hover {
 
 <div class="container">
 
-    <!-- School Logo -->
+    <!-- LOGO -->
     <img src="logo.png" class="logo" alt="School Logo">
 
     <div class="annual">ANNUAL DAY CELEBRATION</div>
@@ -118,25 +127,24 @@ button:hover {
 
     <form id="feedbackForm">
 
-        <!-- STAR RATING -->
-        <div class="stars">
-            <input type="radio" id="star1" name="rating" value="1">
-            <label for="star1">★</label>
+        <!-- ⭐ FIXED STAR RATING -->
+        <div class="rating">
+            <input type="radio" id="r1" name="rating" value="1">
+            <label for="r1">★</label>
 
-            <input type="radio" id="star2" name="rating" value="2">
-            <label for="star2">★</label>
+            <input type="radio" id="r2" name="rating" value="2">
+            <label for="r2">★</label>
 
-            <input type="radio" id="star3" name="rating" value="3">
-            <label for="star3">★</label>
+            <input type="radio" id="r3" name="rating" value="3">
+            <label for="r3">★</label>
 
-            <input type="radio" id="star4" name="rating" value="4">
-            <label for="star4">★</label>
+            <input type="radio" id="r4" name="rating" value="4">
+            <label for="r4">★</label>
 
-            <input type="radio" id="star5" name="rating" value="5">
-            <label for="star5">★</label>
+            <input type="radio" id="r5" name="rating" value="5">
+            <label for="r5">★</label>
         </div>
 
-        <!-- FEEDBACK -->
         <textarea id="feedback" placeholder="Feedback (optional)"></textarea>
 
         <button type="submit">Submit</button>
