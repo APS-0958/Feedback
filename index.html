@@ -1,152 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Artificial Intelligence Expo - Avatar Public School</title>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f2f5f9;
-            padding: 20px;
-        }
-
-        img {
-            width: 300px;
-            margin-bottom: 20px;
-        }
-
-        h1 {
-            color: blue;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
-        }
-
-        h2 {
-            color: #cc5500;
-            margin-bottom: 10px;
-        }
-
-        h3 {
-            margin-bottom: 20px;
-        }
-
-        .stars {
-            font-size: 40px;
-            cursor: pointer;
-            margin-bottom: 10px;
-        }
-
-        .star {
-            color: gray;
-        }
-
-        .star.selected {
-            color: gold;
-        }
-
-        textarea {
-            width: 80%;
-            height: 90px;
-            font-size: 16px;
-            margin-top: 10px;
-        }
-
-        button {
-            margin-top: 20px;
-            padding: 12px 30px;
-            font-size: 18px;
-            cursor: pointer;
-        }
-
-        .message {
-            margin-top: 15px;
-            font-weight: bold;
-            color: red;
-        }
-    </style>
+  <title>Feedback - Avatar Public School</title>
 </head>
 
 <body>
+  <h2>Feedback Form</h2>
 
-    <!-- School Logo -->
-    <img src="school_logo.png" alt="Avatar Public School Logo">
+  <form id="feedbackForm">
+    <p><b>Rate our stars</b></p>
 
-    <!-- Text Content -->
-    <h1>ANNUAL DAY CELEBRATION</h1>
-    <h2>Artificial Intelligence Expo</h2>
-    <h3>Weather Forecast Prediction Using Artificial Intelligence</h3>
+    <input type="radio" name="rating" value="1 star" required> 1 star<br>
+    <input type="radio" name="rating" value="2 stars"> 2 stars<br>
+    <input type="radio" name="rating" value="3 stars"> 3 stars<br>
+    <input type="radio" name="rating" value="4 stars"> 4 stars<br>
+    <input type="radio" name="rating" value="5 stars"> 5 stars<br><br>
 
-    <!-- Rating Section -->
-    <h3>Rate Our Project <span style="color:red">*</span></h3>
-    <div class="stars">
-        <span class="star" id="star1" onclick="selectStars(1)">★</span>
-        <span class="star" id="star2" onclick="selectStars(2)">★</span>
-        <span class="star" id="star3" onclick="selectStars(3)">★</span>
-        <span class="star" id="star4" onclick="selectStars(4)">★</span>
-        <span class="star" id="star5" onclick="selectStars(5)">★</span>
-    </div>
+    <p><b>Feedback (optional)</b></p>
+    <textarea id="feedback" rows="4" cols="40"></textarea><br><br>
 
-    <!-- Hidden rating value -->
-    <input type="hidden" id="ratingValue" value="">
+    <button type="submit">Submit</button>
+  </form>
 
-    <!-- Feedback Section -->
-    <h3>Feedback: (optional)</h3>
-    <textarea id="feedback" placeholder="Type your feedback here..."></textarea>
+  <p id="msg"></p>
 
-    <!-- Submit Button -->
-    <br>
-    <button onclick="submitForm()">Submit</button>
+  <script>
+    document.getElementById("feedbackForm").addEventListener("submit", function(e) {
+      e.preventDefault();
 
-    <!-- Message -->
-    <div class="message" id="message"></div>
+      const rating = document.querySelector('input[name="rating"]:checked').value;
+      const feedback = document.getElementById("feedback").value;
 
-    <script>
-        let rating = 0;
+      const formURL =
+        "https://docs.google.com/forms/d/e/1FAIpQLSesc4DPfk4lbNJ_TCszdNUwRmQHlEDUzxIDRdla1kis-XjWtg/formResponse";
 
-        function selectStars(num) {
-            rating = num;
-            document.getElementById("ratingValue").value = num;
-            let stars = document.querySelectorAll(".star");
+      const data = new URLSearchParams();
+      data.append("entry.902722392", rating);
+      data.append("entry.1659189686", feedback);
 
-            stars.forEach((star, index) => {
-                star.classList.toggle("selected", index < num);
-            });
-        }
+      fetch(formURL, {
+        method: "POST",
+        body: data,
+        mode: "no-cors"
+      });
 
-        function submitForm() {
-            let feedback = document.getElementById("feedback").value;
+      document.getElementById("msg").innerHTML =
+        "Thank you! Your response has been recorded.";
 
-            if (rating === 0) {
-                document.getElementById("message").style.color = "red";
-                document.getElementById("message").innerText = "You have not filled the form";
-                return;
-            }
-
-          const formURL = "https://docs.google.com/forms/d/e/1r4nO4LWOnKHTfOzwSN3TxeS5dDoR01GOvH4xaxVdkLE/formResponse";
-
-            const data = new URLSearchParams();
-            data.append("entry.902722392", rating);
-            data.append("entry.1659189686", feedback);
-
-            fetch(formURL, {
-                method: "POST",
-                mode: "no-cors",
-                body: data
-            });
-
-            document.getElementById("message").style.color = "green";
-            document.getElementById("message").innerText =
-                "Thank you! Your response has been submitted.";
-
-            // Optional: reset after submit
-            rating = 0;
-            document.getElementById("feedback").value = "";
-            document.querySelectorAll(".star").forEach(s => s.classList.remove("selected"));
-        }
-    </script>
-
+      document.getElementById("feedbackForm").reset();
+    });
+  </script>
 </body>
 </html>
-
