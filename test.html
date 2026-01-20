@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>AI Expo Feedback</title>
+
+<style>
+body{
+    background:#eef5fb;
+    font-family:Arial;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
+
+.card{
+    background:white;
+    width:340px;
+    padding:20px;
+    border-radius:12px;
+    text-align:center;
+    box-shadow:0 6px 20px rgba(0,0,0,0.2);
+}
+
+.logo{ width:80px; }
+
+h1{ color:#003cff; font-size:22px; }
+h2{ color:green; font-size:16px; }
+p{ font-size:14px; }
+
+/* ⭐ STAR STYLES */
+.stars{
+    display:flex;
+    justify-content:center;
+    gap:5px;
+    margin-bottom:10px;
+}
+
+.stars span{
+    font-size:28px;
+    color:#ccc;
+    cursor:pointer;
+}
+
+textarea{
+    width:100%;
+    height:70px;
+    margin-top:10px;
+    border-radius:6px;
+}
+
+button{
+    width:100%;
+    margin-top:15px;
+    padding:10px;
+    background:#003cff;
+    color:white;
+    border:none;
+    border-radius:6px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+<img src="logo.png" class="logo">
+
+<h1>ANNUAL DAY CELEBRATION</h1>
+<h2>AI EXPO</h2>
+<p><b>Weather Forecast Prediction using AI</b></p>
+
+<form id="feedbackForm">
+
+<!-- ⭐ LEFT → RIGHT STARS -->
+<div class="stars" id="stars">
+  <span data-value="1">★</span>
+  <span data-value="2">★</span>
+  <span data-value="3">★</span>
+  <span data-value="4">★</span>
+  <span data-value="5">★</span>
+</div>
+
+<!-- hidden input for Google Form -->
+<input type="hidden" id="rating" value="">
+
+<textarea placeholder="Write your feedback"></textarea>
+
+<button type="submit">Submit Feedback</button>
+</form>
+
+<p id="msg"></p>
+</div>
+
+<script>
+// ⭐ STAR LOGIC (LEFT → RIGHT)
+const stars = document.querySelectorAll("#stars span");
+const ratingInput = document.getElementById("rating");
+
+stars.forEach((star, index) => {
+    star.addEventListener("click", () => {
+        stars.forEach((s, i) => {
+            s.style.color = i <= index ? "#f4b400" : "#ccc";
+        });
+        ratingInput.value = (index + 1) + " stars";
+    });
+});
+
+// FORM SUBMIT (NO REDIRECT)
+document.getElementById("feedbackForm").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    if (!ratingInput.value) {
+        alert("Please select a rating");
+        return;
+    }
+
+    const feedback = document.querySelector("textarea").value;
+
+    const url = "https://docs.google.com/forms/d/e/1FAIpQLSesc4DPfk4lbNJ_TCszdNUwRmQHlEDUzxIDRdla1kis-XjWtg/formResponse";
+
+    const data = new FormData();
+    data.append("entry.902722392", ratingInput.value);
+    data.append("entry.1659189686", feedback);
+
+    fetch(url, {
+        method: "POST",
+        mode: "no-cors",
+        body: data
+    });
+
+    document.getElementById("msg").innerHTML = "✅ Feedback submitted successfully!";
+    this.reset();
+
+    // reset stars color
+    stars.forEach(s => s.style.color = "#ccc");
+});
+</script>
+
+</body>
+</html>
