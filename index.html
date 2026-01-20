@@ -1,125 +1,124 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>AI Expo Feedback</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f2f7ff;
-      margin: 0;
-      padding: 0;
-    }
+<meta charset="UTF-8">
+<title>AI Expo Feedback</title>
 
-    .container {
-      width: 350px;
-      margin: 40px auto;
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      text-align: center;
-    }
+<style>
+body{
+    background:#eef5fb;
+    font-family:Arial;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
 
-    h1 {
-      color: blue;
-      margin-bottom: 5px;
-    }
+.card{
+    background:white;
+    width:340px;
+    padding:20px;
+    border-radius:12px;
+    text-align:center;
+    box-shadow:0 6px 20px rgba(0,0,0,0.2);
+}
 
-    h2 {
-      color: green;
-      margin-top: 0;
-    }
+.logo{ width:80px; }
 
-    .project {
-      font-weight: bold;
-      margin-bottom: 15px;
-    }
+h1{ color:#003cff; font-size:22px; }
+h2{ color:green; font-size:16px; }
+p{ font-size:14px; }
 
-    textarea {
-      width: 100%;
-      height: 70px;
-      border-radius: 6px;
-      padding: 5px;
-    }
+.stars{
+    display:flex;
+    justify-content:center;
+    flex-direction:row;
+}
 
-    button {
-      background: blue;
-      color: white;
-      border: none;
-      padding: 10px;
-      width: 100%;
-      border-radius: 6px;
-      font-size: 16px;
-      cursor: pointer;
-    }
+.stars input{ display:none; }
 
-    button:hover {
-      background: darkblue;
-    }
+.stars label{
+    font-size:28px;
+    color:#ccc;
+    cursor:pointer;
+}
 
-    /* STAR RATING */
-    .stars {
-      display: flex;
-      flex-direction: row-reverse;
-      justify-content: center;
-      margin-bottom: 15px;
-    }
+.stars input:checked ~ label{ color:#ccc; }
+.stars label:hover,
+.stars label:hover ~ label,
+.stars input:checked + label,
+.stars input:checked + label ~ label{
+    color:#f4b400;
+}
 
-    .stars input {
-      display: none;
-    }
+textarea{
+    width:100%;
+    height:70px;
+    margin-top:10px;
+    border-radius:6px;
+}
 
-    .stars label {
-      font-size: 30px;
-      color: gray;
-      cursor: pointer;
-    }
-
-    .stars input:checked ~ label,
-    .stars label:hover,
-    .stars label:hover ~ label {
-      color: gold;
-    }
-  </style>
+button{
+    width:100%;
+    margin-top:15px;
+    padding:10px;
+    background:#003cff;
+    color:white;
+    border:none;
+    border-radius:6px;
+}
+</style>
 </head>
 
 <body>
 
+<div class="card">
+<img src="logo.png" class="logo">
 
-    <!-- SCHOOL LOGO (OPTIONAL) -->
-    <!-- Replace logo.png with your logo file name -->
-    <!-- <img src="logo.png" width="80"> -->
+<h1>ANNUAL DAY CELEBRATION</h1>
+<h2>AI EXPO</h2>
+<p><b>Weather Forecast Prediction using AI</b></p>
 
-    <h1>ANNUAL DAY CELEBRATION</h1>
-    <h2>AI EXPO</h2>
+<form id="feedbackForm">
+<div class="stars">
+<input type="radio" id="s5" name="rating" value="5 stars"><label for="s5">★</label>
+<input type="radio" id="s4" name="rating" value="4 stars"><label for="s4">★</label>
+<input type="radio" id="s3" name="rating" value="3 stars"><label for="s3">★</label>
+<input type="radio" id="s2" name="rating" value="2 stars"><label for="s2">★</label>
+<input type="radio" id="s1" name="rating" value="1 star"><label for="s1">★</label>
+</div>
 
-    <div class="project">
-      Weather Forecast Prediction using AI
-    </div>
+<textarea placeholder="Write your feedback"></textarea>
 
-    <!-- GOOGLE FORM CONNECTION -->
-    <form action="https://docs.google.com/forms/d/e/1FAIpQLSesc4DPfk4lbNJ_TCszdNUwRmQHlEDUzxIDRdla1kis-XjWtg/formResponse"
-          method="POST"
-          target="_self">
+<button type="submit">Submit Feedback</button>
+</form>
 
-      <!-- STAR RATING -->
-      <div class="stars">
-        <input type="radio" name="entry.902722392" id="star5" value="5"><label for="star5">★</label>
-        <input type="radio" name="entry.902722392" id="star4" value="4"><label for="star4">★</label>
-        <input type="radio" name="entry.902722392" id="star3" value="3"><label for="star3">★</label>
-        <input type="radio" name="entry.902722392" id="star2" value="2"><label for="star2">★</label>
-        <input type="radio" name="entry.902722392" id="star1" value="1"><label for="star1">★</label>
-      </div>
+<p id="msg"></p>
+</div>
 
-      <!-- FEEDBACK -->
-      <textarea name="entry.1659189686" placeholder="Write your feedback here"></textarea>
-      <br><br>
+<script>
+document.getElementById("feedbackForm").addEventListener("submit", function(e){
+    e.preventDefault();   // 🔴 STOPS REDIRECT
 
-      <button type="submit">Submit Feedback</button>
+    const rating = document.querySelector('input[name="rating"]:checked')?.value || "";
+    const feedback = document.querySelector("textarea").value;
 
-    </form>
+    const url = "https://docs.google.com/forms/d/e/1FAIpQLSesc4DPfk4lbNJ_TCszdNUwRmQHlEDUzxIDRdla1kis-XjWtg/formResponse";
 
-  </div>
+    const data = new FormData();
+    data.append("entry.902722392", rating);
+    data.append("entry.1659189686", feedback);
+
+    fetch(url, {
+        method: "POST",
+        mode: "no-cors",
+        body: data
+    });
+
+    document.getElementById("msg").innerHTML = "✅ Feedback submitted successfully!";
+    this.reset();
+});
+</script>
 
 </body>
 </html>
