@@ -32,10 +32,12 @@ p{ font-size:14px; }
 .stars{
     display:flex;
     justify-content:center;
-    flex-direction:row;
+    gap:5px;
 }
 
-.stars input{ display:none; }
+.stars input{
+    display:none;
+}
 
 .stars label{
     font-size:28px;
@@ -43,11 +45,13 @@ p{ font-size:14px; }
     cursor:pointer;
 }
 
-.stars input:checked ~ label{ color:#ccc; }
+/* LEFT → RIGHT highlighting */
+.stars input:checked ~ label{
+    color:#f4b400;
+}
+
 .stars label:hover,
-.stars label:hover ~ label,
-.stars input:checked + label,
-.stars input:checked + label ~ label{
+.stars label:hover ~ label{
     color:#f4b400;
 }
 
@@ -131,4 +135,5 @@ document.getElementById("feedbackForm").addEventListener("submit", function(e){
 
 </body>
 </html>
+
 
