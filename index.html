@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>AI Exhibition Feedback</title>
+<title>AI Expo Feedback</title>
+
 <style>
 body {
     font-family: Arial, sans-serif;
@@ -17,25 +18,39 @@ body {
 .container {
     background: white;
     padding: 25px;
-    width: 350px;
-    border-radius: 12px;
+    width: 360px;
+    border-radius: 15px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     text-align: center;
 }
 
-h2 {
-    margin-bottom: 5px;
-    color: #0d47a1;
+.logo {
+    width: 90px;
+    margin-bottom: 10px;
 }
 
-p {
+.annual {
+    color: blue;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.expo {
+    font-size: 15px;
+    color: #2e7d32;
+    margin-top: 4px;
+}
+
+.project {
     font-size: 14px;
-    color: #555;
+    margin: 10px 0;
+    color: #333;
 }
 
 .stars {
     display: flex;
     justify-content: center;
+    flex-direction: row;
     margin: 15px 0;
 }
 
@@ -44,14 +59,15 @@ p {
 }
 
 .stars label {
-    font-size: 30px;
+    font-size: 32px;
     color: #ccc;
     cursor: pointer;
+    padding: 2px;
 }
 
-.stars input:checked ~ label,
-.stars label:hover,
-.stars label:hover ~ label {
+/* Correct star filling (LEFT → RIGHT) */
+.stars input:checked + label,
+.stars input:checked + label ~ label {
     color: gold;
 }
 
@@ -80,10 +96,10 @@ button:hover {
     background: #1565c0;
 }
 
-#successMsg {
+#success {
     display: none;
-    color: green;
     margin-top: 10px;
+    color: green;
     font-size: 14px;
 }
 </style>
@@ -92,41 +108,48 @@ button:hover {
 <body>
 
 <div class="container">
-    <h2>AI Exhibition</h2>
-    <p>Please rate our project</p>
+
+    <!-- School Logo -->
+    <img src="logo.png" class="logo" alt="School Logo">
+
+    <div class="annual">ANNUAL DAY CELEBRATION</div>
+    <div class="expo">AI EXPO</div>
+    <div class="project">Weather Forecast Prediction Using AI</div>
 
     <form id="feedbackForm">
 
+        <!-- STAR RATING -->
         <div class="stars">
-            <input type="radio" id="star5" name="rating" value="5">
-            <label for="star5">★</label>
-
-            <input type="radio" id="star4" name="rating" value="4">
-            <label for="star4">★</label>
-
-            <input type="radio" id="star3" name="rating" value="3">
-            <label for="star3">★</label>
+            <input type="radio" id="star1" name="rating" value="1">
+            <label for="star1">★</label>
 
             <input type="radio" id="star2" name="rating" value="2">
             <label for="star2">★</label>
 
-            <input type="radio" id="star1" name="rating" value="1">
-            <label for="star1">★</label>
+            <input type="radio" id="star3" name="rating" value="3">
+            <label for="star3">★</label>
+
+            <input type="radio" id="star4" name="rating" value="4">
+            <label for="star4">★</label>
+
+            <input type="radio" id="star5" name="rating" value="5">
+            <label for="star5">★</label>
         </div>
 
-        <textarea id="feedback" placeholder="Your feedback (optional)"></textarea>
+        <!-- FEEDBACK -->
+        <textarea id="feedback" placeholder="Feedback (optional)"></textarea>
 
         <button type="submit">Submit</button>
     </form>
 
-    <div id="successMsg">✅ Thank you for your feedback!</div>
+    <div id="success">✅ Feedback submitted successfully!</div>
 </div>
 
 <script>
 document.getElementById("feedbackForm").addEventListener("submit", function(e) {
     e.preventDefault();
 
-    const rating = document.querySelector('input[name="rating"]:checked')?.value;
+    const rating = document.querySelector('input[name="rating"]:checked');
     const feedback = document.getElementById("feedback").value;
 
     if (!rating) {
@@ -134,10 +157,11 @@ document.getElementById("feedbackForm").addEventListener("submit", function(e) {
         return;
     }
 
-    const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSesc4DPfk4lbNJ_TCszdNUwRmQHlEDUzxIDRdla1kis-XjWtg/formResponse";
+    const formURL =
+    "https://docs.google.com/forms/d/e/1FAIpQLSesc4DPfk4lbNJ_TCszdNUwRmQHlEDUzxIDRdla1kis-XjWtg/formResponse";
 
     const data = new FormData();
-    data.append("entry.902722392", rating);
+    data.append("entry.902722392", rating.value);
     data.append("entry.1659189686", feedback);
 
     fetch(formURL, {
@@ -147,7 +171,7 @@ document.getElementById("feedbackForm").addEventListener("submit", function(e) {
     });
 
     document.getElementById("feedbackForm").reset();
-    document.getElementById("successMsg").style.display = "block";
+    document.getElementById("success").style.display = "block";
 });
 </script>
 
